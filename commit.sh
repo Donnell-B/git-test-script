@@ -2,7 +2,7 @@ function commit() {
     git fetch
     git pull
 
-    files=$({ git diff --name-only ; git diff --name-only --staged ; })
+    files=$({ git diff --name-only ; git diff --name-only --staged | uniq; })
 
     if [[ -z $files ]]; then
         echo "No Changes to add"
@@ -21,3 +21,8 @@ function commit() {
 }
 
 commit
+
+# pull_rebase_setting=$(git config get pull.rebase --local)
+# if [[ -z $pull_rebase_setting ]]; then
+#     echo "Please set"
+# echo $pull_rebase_setting
