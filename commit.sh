@@ -1,12 +1,12 @@
 function commit() {
-    git_status=$( git status )
+    git_status=$( git status 2>&1)
     if [[ "$git_status" == *"fatal: not a git repository"* ]]; then
         echo "Not in a Git Repository! Exiting"
-        exit 0
+        return 1
     fi
 
     git fetch
-    git pull || echo "Git Pull failed -- Please Pull Manually"
+    git pull || { echo "Git Pull failed -- Please Pull Manually"; return 1; }
 
     tracked_files=$( git ls-files -z )
     if [[ -z $tracked_files ]]; then
@@ -18,10 +18,10 @@ function commit() {
             git commit -m "Tracking initial files"
             git push
             echo "Files added, committed, and pushed successfully."
-            exit 1
+            return 0
         else
-            echo "No files added. Exiting."
-            exit 0
+            echo "No files added. Please do it manually. Exiting."
+            return 1
         fi
     fi
 
@@ -29,7 +29,7 @@ function commit() {
 
     if [[ -z $files ]]; then
         echo "No Changes to add"
-        exit 0
+        return 0
     fi
 
     echo "Changed Detected..."
@@ -41,10 +41,10 @@ function commit() {
     read -p "Please add a commit message: " commit_msg
     if [[ -z "$commit_msg" ]]; then
         echo "Commit message cannot be empty"
-        exit 1
+        return 1
     fi
     git commit -m "$commit_msg"
-    git push || { echo "Git push failed"; exit 1; }
+    git push || { echo "Git push failed"; return 1; }
 }
 
 commit
