@@ -21,8 +21,3 @@ function commit() {
 }
 
 commit
-
-# pull_rebase_setting=$(git config get pull.rebase --local)
-# if [[ -z $pull_rebase_setting ]]; then
-#     echo "Please set"
-# echo $pull_rebase_setting
