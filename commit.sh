@@ -1,5 +1,5 @@
 function commit() {
-    git_status=$( git status 2>&1)
+    git_status=$( git status 2>&1 )
     if [[ "$git_status" == *"fatal: not a git repository"* ]]; then
         echo "Not in a Git Repository! Exiting"
         return 1
